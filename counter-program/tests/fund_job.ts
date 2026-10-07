@@ -52,7 +52,7 @@ describe("fund_job", () => {
   it("locks the customer's tokens in the vault and marks the job Funded", async () => {
     await program.methods
       .fundJob()
-      .accounts({ job, mint, customerTokenAccount: customerToken, tokenProgram: TOKEN_PROGRAM_ID })
+      .accountsPartial({ job, mint, customerTokenAccount: customerToken, tokenProgram: TOKEN_PROGRAM_ID })
       .rpc();
 
     const vaultAccount = await getAccount(provider.connection, vault);
@@ -70,7 +70,7 @@ describe("fund_job", () => {
     try {
       await program.methods
         .fundJob()
-        .accounts({ job, mint, customerTokenAccount: customerToken, tokenProgram: TOKEN_PROGRAM_ID })
+        .accountsPartial({ job, mint, customerTokenAccount: customerToken, tokenProgram: TOKEN_PROGRAM_ID })
         .rpc();
     } catch (e) {
       message = String(e);

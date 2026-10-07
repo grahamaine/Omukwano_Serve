@@ -55,14 +55,14 @@ describe("release", () => {
       .rpc();
     await program.methods
       .fundJob()
-      .accounts({ job, mint, customerTokenAccount: customerToken, tokenProgram: TOKEN_PROGRAM_ID })
+      .accountsPartial({ job, mint, customerTokenAccount: customerToken, tokenProgram: TOKEN_PROGRAM_ID })
       .rpc();
   });
 
   it("rejects anyone who is not the attestor", async () => {
     let message = "";
     try {
-      await program.methods.release().accounts(releaseAccounts(impostor.publicKey)).signers([impostor]).rpc();
+      await program.methods.release().accountsPartial(releaseAccounts(impostor.publicKey)).signers([impostor]).rpc();
     } catch (e) {
       message = String(e);
     }
@@ -72,7 +72,7 @@ describe("release", () => {
   });
 
   it("pays the provider when the attestor signs", async () => {
-    await program.methods.release().accounts(releaseAccounts(attestor.publicKey)).signers([attestor]).rpc();
+    await program.methods.release().accountsPartial(releaseAccounts(attestor.publicKey)).signers([attestor]).rpc();
 
     const providerAccount = await getAccount(provider.connection, providerToken);
     assert.equal(Number(providerAccount.amount), AMOUNT);
@@ -85,7 +85,7 @@ describe("release", () => {
   it("rejects a second release", async () => {
     let message = "";
     try {
-      await program.methods.release().accounts(releaseAccounts(attestor.publicKey)).signers([attestor]).rpc();
+      await program.methods.release().accountsPartial(releaseAccounts(attestor.publicKey)).signers([attestor]).rpc();
     } catch (e) {
       message = String(e);
     }
