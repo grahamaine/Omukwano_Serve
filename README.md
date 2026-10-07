@@ -1,3 +1,5 @@
+<p align="center"><img src="brand/banner-1500x500.png" alt="Omukwano — Services & Suppliers, East Africa, built on Solana" width="100%"></p>
+
 # Omukwano_Serve
 
 Pay when the service is done. Customers lock a deposit, the provider does the job, and the money releases when the customer confirms with a short code — built on Solana for local service businesses (salons, repairs, suppliers) in Uganda.

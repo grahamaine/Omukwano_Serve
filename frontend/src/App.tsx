@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { useCounterProgram } from './useCounter'
+import logo from './assets/logo-mark.png'
 import './App.css'
 
 function App() {
@@ -32,15 +33,26 @@ function App() {
   // instruction exists. Pattern: ctx.program.methods.increment().rpc()
 
   return (
-    <main>
-      <h1>Solana DevNet Counter</h1>
-      <WalletMultiButton />
+    <main className="app">
+      <header className="brand-bar">
+        <div className="brand">
+          <img src={logo} alt="Omukwano logo" />
+          <div className="brand-name">Omukwano<span>Services &amp; Suppliers</span></div>
+        </div>
+        <WalletMultiButton />
+      </header>
+
+      <section className="hero">
+        <h1>Pay when the service is done</h1>
+        <p>Lock the payment. Confirm with a code. The provider gets paid.</p>
+      </section>
+
       {ctx && (
-        <section>
-          <p>Counter: {count === null ? 'not created yet' : count}</p>
-          {count === null && <button onClick={initialize}>Create counter</button>}
+        <section className="card">
+          <p className="count">Counter: {count === null ? 'not created yet' : count}</p>
+          {count === null && <button className="primary" onClick={initialize}>Create counter</button>}
           {/* TODO (you): add an "Increment" button when count !== null */}
-          <p>{status}</p>
+          <p className="status">{status}</p>
         </section>
       )}
     </main>
