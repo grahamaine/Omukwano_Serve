@@ -1,0 +1,10 @@
+node_modules/
+target/
+dist/
+.anchor/
+.env
+.env.*
+*.log
+.DS_Store
+**/*-keypair.json
+test-ledger/
