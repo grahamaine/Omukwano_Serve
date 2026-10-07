@@ -31,6 +31,9 @@ pub mod counter_program {
     ) -> Result<()> {
         create_job::handler(ctx, job_id, provider, mint, amount, reference, attestor, deadline)
     }
+        pub fn fund_job(ctx: Context<FundJob>) -> Result<()> {
+        fund_job::handler(ctx)
+    }
 
     // TODO (you): uncomment once increment.rs is finished.
     // pub fn increment(ctx: Context<Increment>) -> Result<()> {
