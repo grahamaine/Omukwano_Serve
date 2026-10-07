@@ -23,6 +23,6 @@ cd frontend && npm install && npm run dev
 
 ## Roadmap
 
-1. Escrow `Job` account with deposit, code-hash confirmation, cancel and timeout.
+1. Escrow program: `Job` account and `create_job` are done; `fund_job`, `release`, `cancel` and `refund` are next. See [`docs/escrow-design.md`](docs/escrow-design.md).
 2. Frontend job flow for customer and provider.
 3. Mobile money and bank transfer on-ramp via a payment partner.
