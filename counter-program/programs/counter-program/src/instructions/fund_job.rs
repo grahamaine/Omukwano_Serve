@@ -37,10 +37,19 @@ pub struct FundJob<'info> {
     pub system_program: Program<'info, System>,
 }
 pub fn handler(ctx: Context<FundJob>) -> Result<()> {
-    // 1. Check the status is Created, else ErrorCode::WrongStatus (use require!).
-    // 2. Move job.amount from customer_token_account to vault with transfer_checked.
-    //    You need: a CpiContext::new(token_program, TransferChecked { from, mint, to, authority }),
-    //    the amount, and mint.decimals.
-    // 3. Set job.status = JobStatus::Funded.
+    require!(ctx.accounts.job.status == JobStatus::Created, ErrorCode::WrongStatus);
+
+    let cpi_ctx = CpiContext::new(
+        ctx.accounts.token_program.key(),
+        TransferChecked {
+            from: ctx.accounts.customer_token_account.to_account_info(),
+            mint: ctx.accounts.mint.to_account_info(),
+            to: ctx.accounts.vault.to_account_info(),
+            authority: ctx.accounts.customer.to_account_info(),
+        },
+    );
+    transfer_checked(cpi_ctx, ctx.accounts.job.amount, ctx.accounts.mint.decimals)?;
+
+    ctx.accounts.job.status = JobStatus::Funded;
     Ok(())
 }
