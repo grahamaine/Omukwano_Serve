@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { useCounterProgram } from './useCounter'
 import { ChainMarquee } from './ui/ChainMarquee'
+import { Dashboard } from './ui/Dashboard'
 import logo from './assets/logo-mark.png'
 import './App.css'
 
@@ -56,6 +57,7 @@ function App() {
         <nav className="nav-links">
           <a href="#how">How it works</a>
           <a href="#why">Why Omukwano</a>
+          <a href="#dashboard">Dashboard</a>
           <a href="#try">Try on devnet</a>
         </nav>
         <WalletMultiButton />
@@ -99,6 +101,12 @@ function App() {
               </article>
             ))}
           </div>
+        </section>
+
+        <section id="dashboard" className="section">
+          <h2>Business dashboard</h2>
+          <p className="sub">Track deposits, payouts and your provider level in one place.</p>
+          <Dashboard />
         </section>
 
         <section id="try" className="section">
