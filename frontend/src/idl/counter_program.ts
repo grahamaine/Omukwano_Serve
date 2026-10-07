@@ -92,6 +92,94 @@ export type CounterProgram = {
       ]
     },
     {
+      "name": "fundJob",
+      "discriminator": [
+        244,
+        198,
+        4,
+        15,
+        41,
+        178,
+        169,
+        187
+      ],
+      "accounts": [
+        {
+          "name": "customer",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "job",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  106,
+                  111,
+                  98
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "customer"
+              },
+              {
+                "kind": "account",
+                "path": "job.job_id",
+                "account": "job"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint",
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "customerTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "job"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tokenProgram"
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "initialize",
       "discriminator": [
         175,
@@ -135,6 +223,93 @@ export type CounterProgram = {
         {
           "name": "systemProgram",
           "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "release",
+      "discriminator": [
+        253,
+        249,
+        15,
+        206,
+        28,
+        127,
+        193,
+        241
+      ],
+      "accounts": [
+        {
+          "name": "attestor",
+          "docs": [
+            "The confirmation service. It signs only after checking the customer's SMS code off-chain."
+          ],
+          "signer": true,
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "job",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  106,
+                  111,
+                  98
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "job.customer",
+                "account": "job"
+              },
+              {
+                "kind": "account",
+                "path": "job.job_id",
+                "account": "job"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint",
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "job"
+              }
+            ]
+          }
+        },
+        {
+          "name": "providerTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "tokenProgram"
         }
       ],
       "args": []
