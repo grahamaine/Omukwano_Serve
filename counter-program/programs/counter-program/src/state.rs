@@ -25,7 +25,9 @@ pub struct Job {
     pub provider: Pubkey,
     pub mint: Pubkey,        // the stablecoin (e.g. USDC)
     pub amount: u64,         // in the mint's smallest unit
-    pub code_hash: [u8; 32], // hash of the secret confirmation code
+    #[max_len(8)]
+    pub reference: String,   // public goods/service abbreviation, e.g. "HAIR"
+    pub attestor: Pubkey,    // confirmation service that checks the SMS code off-chain
     pub deadline: i64,       // unix time after which the customer can reclaim funds
     pub job_id: u64,         // lets one customer have many jobs
     pub status: JobStatus,

@@ -27,10 +27,16 @@ pub fn handler(
     provider: Pubkey,
     mint: Pubkey,
     amount: u64,
-    code_hash: [u8; 32],
+    reference: String,
+    attestor: Pubkey,
     deadline: i64,
 ) -> Result<()> {
     require!(amount > 0, ErrorCode::InvalidAmount);
+    require!(
+        (2..=8).contains(&reference.len())
+            && reference.bytes().all(|b| b.is_ascii_uppercase() || b.is_ascii_digit()),
+        ErrorCode::InvalidReference
+    );
     require!(deadline > Clock::get()?.unix_timestamp, ErrorCode::DeadlineInPast);
 
     let job = &mut ctx.accounts.job;
@@ -38,7 +44,8 @@ pub fn handler(
     job.provider = provider;
     job.mint = mint;
     job.amount = amount;
-    job.code_hash = code_hash;
+    job.reference = reference;
+    job.attestor = attestor;
     job.deadline = deadline;
     job.job_id = job_id;
     job.status = JobStatus::Created;

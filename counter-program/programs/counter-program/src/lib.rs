@@ -9,7 +9,7 @@ pub use constants::*;
 pub use instructions::*;
 pub use state::*;
 
-declare_id!("5ir5g7y8x3ENmgntpfY1nLBDxnvAJYUXZxLzMfh4kx6N");
+declare_id!("9dLzUWtKppSVHsBBAAea7nqhWUy2pzY3E19PrnGdP2Q4");
 
 #[program]
 pub mod counter_program {
@@ -25,10 +25,11 @@ pub mod counter_program {
         provider: Pubkey,
         mint: Pubkey,
         amount: u64,
-        code_hash: [u8; 32],
+        reference: String,
+        attestor: Pubkey,
         deadline: i64,
     ) -> Result<()> {
-        create_job::handler(ctx, job_id, provider, mint, amount, code_hash, deadline)
+        create_job::handler(ctx, job_id, provider, mint, amount, reference, attestor, deadline)
     }
 
     // TODO (you): uncomment once increment.rs is finished.

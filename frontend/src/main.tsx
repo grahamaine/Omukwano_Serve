@@ -13,7 +13,7 @@ import App from './App.tsx'
 // Wallet Standard wallets (Phantom, Solflare, Backpack...) are auto-detected.
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ConnectionProvider endpoint={clusterApiUrl('devnet')}>
+    <ConnectionProvider endpoint={import.meta.env.VITE_RPC_URL || clusterApiUrl('devnet')}>
       <WalletProvider wallets={[]} autoConnect>
         <WalletModalProvider>
           <App />

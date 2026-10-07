@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-counter_program = "5ir5g7y8x3ENmgntpfY1nLBDxnvAJYUXZxLzMfh4kx6N"
+counter_program = "9dLzUWtKppSVHsBBAAea7nqhWUy2pzY3E19PrnGdP2Q4"
 
 [provider]
 cluster = "devnet"

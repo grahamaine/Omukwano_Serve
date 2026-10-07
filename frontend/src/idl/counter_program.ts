@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/counter_program.json`.
  */
 export type CounterProgram = {
-  "address": "5ir5g7y8x3ENmgntpfY1nLBDxnvAJYUXZxLzMfh4kx6N",
+  "address": "9dLzUWtKppSVHsBBAAea7nqhWUy2pzY3E19PrnGdP2Q4",
   "metadata": {
     "name": "counterProgram",
     "version": "0.1.0",
@@ -78,13 +78,12 @@ export type CounterProgram = {
           "type": "u64"
         },
         {
-          "name": "codeHash",
-          "type": {
-            "array": [
-              "u8",
-              32
-            ]
-          }
+          "name": "reference",
+          "type": "string"
+        },
+        {
+          "name": "attestor",
+          "type": "pubkey"
         },
         {
           "name": "deadline",
@@ -192,21 +191,26 @@ export type CounterProgram = {
     },
     {
       "code": 6004,
-      "name": "wrongCode",
-      "msg": "The confirmation code is incorrect"
+      "name": "invalidReference",
+      "msg": "Reference must be 2-8 uppercase letters or digits"
     },
     {
       "code": 6005,
+      "name": "notAttestor",
+      "msg": "Only the confirmation service can release funds"
+    },
+    {
+      "code": 6006,
       "name": "notProvider",
       "msg": "Only the provider can do this"
     },
     {
-      "code": 6006,
+      "code": 6007,
       "name": "notCustomer",
       "msg": "Only the customer can do this"
     },
     {
-      "code": 6007,
+      "code": 6008,
       "name": "tooEarly",
       "msg": "The deadline has not passed yet"
     }
@@ -257,13 +261,12 @@ export type CounterProgram = {
             "type": "u64"
           },
           {
-            "name": "codeHash",
-            "type": {
-              "array": [
-                "u8",
-                32
-              ]
-            }
+            "name": "reference",
+            "type": "string"
+          },
+          {
+            "name": "attestor",
+            "type": "pubkey"
           },
           {
             "name": "deadline",

@@ -2,9 +2,15 @@
 
 # Omukwano_Serve
 
-Pay when the service is done. Customers lock a deposit, the provider does the job, and the money releases when the customer confirms with a short code — built on Solana for local service businesses (salons, repairs, suppliers) in Uganda.
+Pay when the service is done. Customers lock a deposit, the provider does the job, and the money releases when the customer confirms with a short code — built on Solana for local businesses (salons, repairs, rides, food, shops and suppliers) in Uganda.
 
 > Status: early prototype for Encode Club Solana Hackathon 2026. The code is currently a counter starter that is being turned into the escrow program.
+
+## Docs
+
+- [How it works](docs/how-it-works.md)
+- [Escrow build spec](docs/escrow-design.md)
+- [Deployment](docs/deployment.md)
 
 ## Layout
 

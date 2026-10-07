@@ -10,8 +10,10 @@ pub enum ErrorCode {
     DeadlineInPast,
     #[msg("Job is not in the right status for this action")]
     WrongStatus,
-    #[msg("The confirmation code is incorrect")]
-    WrongCode,
+    #[msg("Reference must be 2-8 uppercase letters or digits")]
+    InvalidReference,
+    #[msg("Only the confirmation service can release funds")]
+    NotAttestor,
     #[msg("Only the provider can do this")]
     NotProvider,
     #[msg("Only the customer can do this")]

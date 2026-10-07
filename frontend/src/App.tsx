@@ -3,6 +3,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { useCounterProgram } from './useCounter'
 import { ChainMarquee } from './ui/ChainMarquee'
 import { Dashboard } from './ui/Dashboard'
+import { Services } from './ui/Services'
 import logo from './assets/logo-mark.png'
 import './App.css'
 
@@ -56,6 +57,7 @@ function App() {
         </a>
         <nav className="nav-links">
           <a href="#how">How it works</a>
+          <a href="#services">Services</a>
           <a href="#why">Why Omukwano</a>
           <a href="#dashboard">Dashboard</a>
           <a href="#try">Try on devnet</a>
@@ -86,6 +88,12 @@ function App() {
               </article>
             ))}
           </div>
+        </section>
+
+        <section id="services" className="section">
+          <h2>Services &amp; store</h2>
+          <p className="sub">From salons and repairs to rides, food and shopping. If someone is paid for a job or an order, it fits.</p>
+          <Services />
         </section>
 
         <ChainMarquee title="Built on Solana · connects to" />

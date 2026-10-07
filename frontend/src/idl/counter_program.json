@@ -1,5 +1,5 @@
 {
-  "address": "5ir5g7y8x3ENmgntpfY1nLBDxnvAJYUXZxLzMfh4kx6N",
+  "address": "9dLzUWtKppSVHsBBAAea7nqhWUy2pzY3E19PrnGdP2Q4",
   "metadata": {
     "name": "counter_program",
     "version": "0.1.0",
@@ -72,13 +72,12 @@
           "type": "u64"
         },
         {
-          "name": "code_hash",
-          "type": {
-            "array": [
-              "u8",
-              32
-            ]
-          }
+          "name": "reference",
+          "type": "string"
+        },
+        {
+          "name": "attestor",
+          "type": "pubkey"
         },
         {
           "name": "deadline",
@@ -186,21 +185,26 @@
     },
     {
       "code": 6004,
-      "name": "WrongCode",
-      "msg": "The confirmation code is incorrect"
+      "name": "InvalidReference",
+      "msg": "Reference must be 2-8 uppercase letters or digits"
     },
     {
       "code": 6005,
+      "name": "NotAttestor",
+      "msg": "Only the confirmation service can release funds"
+    },
+    {
+      "code": 6006,
       "name": "NotProvider",
       "msg": "Only the provider can do this"
     },
     {
-      "code": 6006,
+      "code": 6007,
       "name": "NotCustomer",
       "msg": "Only the customer can do this"
     },
     {
-      "code": 6007,
+      "code": 6008,
       "name": "TooEarly",
       "msg": "The deadline has not passed yet"
     }
@@ -251,13 +255,12 @@
             "type": "u64"
           },
           {
-            "name": "code_hash",
-            "type": {
-              "array": [
-                "u8",
-                32
-              ]
-            }
+            "name": "reference",
+            "type": "string"
+          },
+          {
+            "name": "attestor",
+            "type": "pubkey"
           },
           {
             "name": "deadline",
