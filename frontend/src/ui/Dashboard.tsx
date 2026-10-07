@@ -1,3 +1,4 @@
+import { Lock, Banknote, CircleCheck, Clock } from 'lucide-react'
 import './Dashboard.css'
 
 type JobStatus = 'Locked' | 'In progress' | 'Awaiting code' | 'Released'
@@ -35,10 +36,10 @@ export function Dashboard() {
   const { current, next, progress } = levelFor(completed)
 
   const stats = [
-    { label: 'Funds in escrow', value: `${locked} USDC` },
-    { label: 'Paid out', value: `${released} USDC` },
-    { label: 'Jobs completed', value: String(completed) },
-    { label: 'Open jobs', value: String(DEMO_JOBS.length - completed) },
+    { label: 'Funds in escrow', value: `${locked} USDC`, Icon: Lock },
+    { label: 'Paid out', value: `${released} USDC`, Icon: Banknote },
+    { label: 'Jobs completed', value: String(completed), Icon: CircleCheck },
+    { label: 'Open jobs', value: String(DEMO_JOBS.length - completed), Icon: Clock },
   ]
 
   return (
@@ -47,9 +48,12 @@ export function Dashboard() {
 
       <div className="dash-stats">
         {stats.map((s) => (
-          <div className="card stat" key={s.label}>
-            <span>{s.label}</span>
-            <strong>{s.value}</strong>
+          <div className="card wide stat" key={s.label}>
+            <span className="ico"><s.Icon size={24} strokeWidth={1.8} /></span>
+            <div className="body">
+              <span>{s.label}</span>
+              <strong>{s.value}</strong>
+            </div>
           </div>
         ))}
       </div>

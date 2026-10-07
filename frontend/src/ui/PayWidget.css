@@ -1,0 +1,22 @@
+.paywidget { max-width: 760px; margin: 0 auto; text-align: left; }
+.methods { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: .6rem; margin-bottom: 1.2rem; }
+.method { display: flex; align-items: center; gap: .7rem; padding: .8rem; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text); text-align: left; cursor: pointer; }
+.method svg { flex: none; color: var(--teal); }
+.method strong { display: block; color: var(--text-h); font-weight: 500; font-size: .95rem; letter-spacing: .02em; }
+.method small { display: block; color: var(--muted); font-size: .75rem; }
+.method.on { border-color: var(--teal); background: rgba(20,241,178,.07); }
+.method:disabled { opacity: .6; cursor: not-allowed; }
+
+.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: .8rem; margin-bottom: 1.2rem; }
+.fields label { display: grid; gap: .35rem; color: var(--muted); font-size: .85rem; letter-spacing: .04em; text-transform: uppercase; }
+.fields input { padding: .75rem .9rem; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text-h); font-size: 1rem; width: 100%; }
+.fields input:focus { outline: 2px solid var(--teal); outline-offset: 0; border-color: transparent; }
+
+.pay { width: 100%; gap: .5rem; }
+.pay:disabled { opacity: .75; cursor: progress; }
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.pay-msg { display: flex; align-items: center; gap: .5rem; margin: 1rem 0 0; color: var(--text); }
+.pay-msg.done { color: var(--teal); }
+.pay-msg.failed { color: #ff7a7a; }

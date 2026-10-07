@@ -3,7 +3,8 @@
 .tab.on { background: var(--grad-cta); color: #000; }
 .tab:not(.on):hover { color: var(--text-h); }
 
-.cat .ref { display: inline-block; margin-bottom: .8rem; padding: .15rem .6rem; border-radius: 8px; border: 1px solid rgba(20,241,178,.4); color: var(--teal); font: 700 .8rem ui-monospace, Consolas, monospace; letter-spacing: .08em; }
 
 .code-note { margin: 1.4rem 0 0; color: var(--muted); font-size: .9rem; text-align: center; }
 .code-note code { color: var(--teal); font-family: ui-monospace, Consolas, monospace; }
+
+.cat .ref { margin-left: .4rem; padding: .05rem .5rem; border-radius: 6px; border: 1px solid rgba(20,241,178,.4); color: var(--teal); font: 600 .7rem ui-monospace, Consolas, monospace; letter-spacing: .08em; vertical-align: middle; }

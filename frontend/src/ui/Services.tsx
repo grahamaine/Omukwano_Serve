@@ -1,24 +1,25 @@
 import { useState } from 'react'
+import { Scissors, Wrench, Sparkles, HardHat, HeartPulse, GraduationCap, PartyPopper, Bike, UtensilsCrossed, Truck, ShoppingBag, Package, type LucideIcon } from 'lucide-react'
 import './Services.css'
 
 type Group = 'Services' | 'Store'
 
-type Category = { ref: string; name: string; text: string; group: Group }
+type Category = { ref: string; name: string; text: string; group: Group; Icon: LucideIcon }
 
 // `ref` is the public reference stored on each job and shown in the SMS code, e.g. OMK-HAIR-483920.
 export const CATEGORIES: Category[] = [
-  { ref: 'HAIR', name: 'Beauty & barber', text: 'Salons, barbers, braiding, nails and spas.', group: 'Services' },
-  { ref: 'REPR', name: 'Repairs & fundis', text: 'Electricians, plumbers, phone and appliance repair.', group: 'Services' },
-  { ref: 'CLEN', name: 'Cleaning', text: 'Home, office and laundry services.', group: 'Services' },
-  { ref: 'BUIL', name: 'Construction', text: 'Small builds, painting, fit-outs and materials jobs.', group: 'Services' },
-  { ref: 'HLTH', name: 'Health & wellness', text: 'Clinics, pharmacies, fitness and massage.', group: 'Services' },
-  { ref: 'EDUC', name: 'Tutoring & training', text: 'Lessons, courses and workshops.', group: 'Services' },
-  { ref: 'EVNT', name: 'Events', text: 'Photographers, caterers, decor and sound.', group: 'Services' },
-  { ref: 'RIDE', name: 'Rides & boda', text: 'Pay for a trip, release when you arrive.', group: 'Store' },
-  { ref: 'FOOD', name: 'Food orders', text: 'Restaurants and kitchens. Pay on delivery.', group: 'Store' },
-  { ref: 'DLVR', name: 'Courier & delivery', text: 'Parcels and errands, paid when received.', group: 'Store' },
-  { ref: 'SHOP', name: 'Shops & retail', text: 'General merchandise from local sellers.', group: 'Store' },
-  { ref: 'GOOD', name: 'Other goods', text: 'Anything sold in person or online.', group: 'Store' },
+  { ref: 'HAIR', name: 'Beauty & barber', text: 'Salons, barbers, braiding, nails and spas.', group: 'Services', Icon: Scissors },
+  { ref: 'REPR', name: 'Repairs & fundis', text: 'Electricians, plumbers, phone and appliance repair.', group: 'Services', Icon: Wrench },
+  { ref: 'CLEN', name: 'Cleaning', text: 'Home, office and laundry services.', group: 'Services', Icon: Sparkles },
+  { ref: 'BUIL', name: 'Construction', text: 'Small builds, painting, fit-outs and materials jobs.', group: 'Services', Icon: HardHat },
+  { ref: 'HLTH', name: 'Health & wellness', text: 'Clinics, pharmacies, fitness and massage.', group: 'Services', Icon: HeartPulse },
+  { ref: 'EDUC', name: 'Tutoring & training', text: 'Lessons, courses and workshops.', group: 'Services', Icon: GraduationCap },
+  { ref: 'EVNT', name: 'Events', text: 'Photographers, caterers, decor and sound.', group: 'Services', Icon: PartyPopper },
+  { ref: 'RIDE', name: 'Rides & boda', text: 'Pay for a trip, release when you arrive.', group: 'Store', Icon: Bike },
+  { ref: 'FOOD', name: 'Food orders', text: 'Restaurants and kitchens. Pay on delivery.', group: 'Store', Icon: UtensilsCrossed },
+  { ref: 'DLVR', name: 'Courier & delivery', text: 'Parcels and errands, paid when received.', group: 'Store', Icon: Truck },
+  { ref: 'SHOP', name: 'Shops & retail', text: 'General merchandise from local sellers.', group: 'Store', Icon: ShoppingBag },
+  { ref: 'GOOD', name: 'Other goods', text: 'Anything sold in person or online.', group: 'Store', Icon: Package },
 ]
 
 export function Services() {
@@ -35,12 +36,14 @@ export function Services() {
         ))}
       </div>
 
-      <div className="grid grid-4">
+      <div className="grid grid-wide">
         {list.map((c) => (
-          <article className="card cat" key={c.ref}>
-            <span className="ref">{c.ref}</span>
-            <h3>{c.name}</h3>
-            <p>{c.text}</p>
+          <article className="card wide cat" key={c.ref}>
+            <span className="ico"><c.Icon size={26} strokeWidth={1.8} /></span>
+            <div className="body">
+              <h3>{c.name} <span className="ref">{c.ref}</span></h3>
+              <p>{c.text}</p>
+            </div>
           </article>
         ))}
       </div>

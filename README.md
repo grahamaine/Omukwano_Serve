@@ -11,6 +11,7 @@ Pay when the service is done. Customers lock a deposit, the provider does the jo
 - [How it works](docs/how-it-works.md)
 - [Escrow build spec](docs/escrow-design.md)
 - [Deployment](docs/deployment.md)
+- [Wallets and payments (WalletConnect, MTN, Airtel, Pesapal)](docs/payments.md)
 
 ## Layout
 
