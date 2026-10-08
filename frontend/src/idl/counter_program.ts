@@ -14,6 +14,55 @@ export type CounterProgram = {
   },
   "instructions": [
     {
+      "name": "cancel",
+      "discriminator": [
+        232,
+        219,
+        223,
+        41,
+        219,
+        236,
+        220,
+        190
+      ],
+      "accounts": [
+        {
+          "name": "customer",
+          "signer": true,
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "job",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  106,
+                  111,
+                  98
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "job.customer",
+                "account": "job"
+              },
+              {
+                "kind": "account",
+                "path": "job.job_id",
+                "account": "job"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "createJob",
       "discriminator": [
         178,
@@ -223,6 +272,90 @@ export type CounterProgram = {
         {
           "name": "systemProgram",
           "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "refund",
+      "discriminator": [
+        2,
+        96,
+        183,
+        251,
+        63,
+        208,
+        46,
+        46
+      ],
+      "accounts": [
+        {
+          "name": "customer",
+          "signer": true,
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "job",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  106,
+                  111,
+                  98
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "job.customer",
+                "account": "job"
+              },
+              {
+                "kind": "account",
+                "path": "job.job_id",
+                "account": "job"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint",
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "job"
+              }
+            ]
+          }
+        },
+        {
+          "name": "customerTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "tokenProgram"
         }
       ],
       "args": []
