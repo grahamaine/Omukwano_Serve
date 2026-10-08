@@ -9,3 +9,7 @@ dist/
 **/*-keypair.json
 test-ledger/
 !.env.example
+
+.vercel
+
+.vercel
