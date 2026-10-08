@@ -48,7 +48,7 @@ mode (the customer confirms their own job), so no job is ever tied to a service 
 Never commit these, and never prefix them with `VITE_`.
 
 ## Check it is on
-Open `https://omukwano-solana.vercel.app/api/confirm/status`. You should see `{"ready":true,"attestor":"<public key>"}`.
+Open `https://pamoja-solana.vercel.app/api/confirm/status`. You should see `{"ready":true,"attestor":"<public key>"}`.
 New jobs created from the Pay tab then use that key as their confirmer.
 
 ## Honest limits

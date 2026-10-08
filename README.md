@@ -4,7 +4,7 @@
 
 **Pay when the service is done.** Pamoja is a Solana escrow app for local businesses in East Africa: salons, repairs, rides, food, shops and suppliers. A customer locks a payment, the provider does the job, and the money is released when the customer confirms with a short code.
 
-**Live demo:** https://omukwano-solana.vercel.app (Solana devnet)
+**Live demo:** https://pamoja-solana.vercel.app (Solana devnet)
 
 > Status: early prototype for the Encode Club Solana Hackathon 2026. The interface, payment API routes and the first on-chain instruction (`create_job`) exist. The escrow instructions that move money (`fund_job`, `release`, `cancel`, `refund`) are still being written, and the dashboard shows demo data.
 

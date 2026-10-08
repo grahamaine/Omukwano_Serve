@@ -8,7 +8,7 @@
 - **WalletConnect** shows a QR code (or opens the wallet app on mobile). It needs a free project ID:
   1. Create a project at <https://cloud.reown.com> and copy the **Project ID**.
   2. Add it as `VITE_WALLETCONNECT_PROJECT_ID` (local `frontend/.env.local`, and in Vercel project settings).
-  3. Add your site URL (`https://omukwano-solana.vercel.app`) to the project's allowed domains.
+  3. Add your site URL (`https://pamoja-solana.vercel.app`) to the project's allowed domains.
 - Without the ID, WalletConnect is hidden and a console warning appears.
 
 ## Mobile money and card payments

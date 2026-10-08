@@ -26,7 +26,7 @@ const short = (a: string) => `${a.slice(0, 4)}…${a.slice(-4)}`
 const when = (unix: number) => new Date(unix * 1000).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })
 const money = (j: JobView) => `${fromBaseUnits(j.amount, STABLE_DECIMALS)} ${j.mint.equals(STABLE_MINT) ? STABLE_SYMBOL : 'tokens'}`
 
-const EMBED = `<a href="https://omukwano-solana.vercel.app/#pay"
+const EMBED = `<a href="https://pamoja-solana.vercel.app/#pay"
    class="pamoja-pay">Pay with Pamoja</a>`
 
 // What visitors see before they connect a wallet.

@@ -10,7 +10,7 @@ single-page-app rewrite.
 **CLI:**
 ```powershell
 cd frontend
-vercel link --yes --project omukwano-solana
+vercel link --yes --project pamoja-solana
 vercel deploy --prod
 ```
 

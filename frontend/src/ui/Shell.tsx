@@ -15,8 +15,8 @@ export const TABS: { id: TabId; label: string }[] = [
   { id: 'devnet', label: 'Devnet' },
 ]
 
-export const SITE_URL = 'https://omukwano-solana.vercel.app'
-export const REPO_URL = 'https://github.com/grahamaine/Omukwano_Serve'
+export const SITE_URL = 'https://pamoja-solana.vercel.app'
+export const REPO_URL = 'https://github.com/grahamaine/Pamoja'
 
 // One list drives both the header menu and the left icon rail, so they always match.
 type NavItem = { label: string; Icon: LucideIcon; tab?: TabId; href?: string }

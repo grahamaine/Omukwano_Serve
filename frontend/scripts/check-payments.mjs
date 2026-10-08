@@ -1,7 +1,7 @@
 // Calls the LIVE payment routes the way the website does and reports what each provider answers.
 //   node scripts/check-payments.mjs [mtn|airtel|pesapal ...]   (default: all)
 // Needs no secrets: the credentials live on the server. Use your own phone number for real prompts.
-const SITE = process.env.SITE || 'https://omukwano-solana.vercel.app'
+const SITE = process.env.SITE || 'https://pamoja-solana.vercel.app'
 const PHONE = process.env.TEST_PHONE || '0772123456'
 const AMOUNT = Number(process.env.TEST_AMOUNT || 1000)
 const wanted = process.argv.slice(2)

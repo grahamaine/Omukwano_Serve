@@ -16,7 +16,7 @@ const headers = { 'Ocp-Apim-Subscription-Key': subscriptionKey, 'Content-Type': 
 const create = await fetch(`${BASE}/v1_0/apiuser`, {
   method: 'POST',
   headers: { ...headers, 'X-Reference-Id': userId },
-  body: JSON.stringify({ providerCallbackHost: 'omukwano-solana.vercel.app' }),
+  body: JSON.stringify({ providerCallbackHost: 'pamoja-solana.vercel.app' }),
 })
 if (create.status !== 201) {
   console.error(`Creating the API user failed (${create.status}): ${await create.text()}`)
