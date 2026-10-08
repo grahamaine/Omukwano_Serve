@@ -1,17 +1,11 @@
-import { Lock, Banknote, CircleCheck, Clock } from 'lucide-react'
+import type { ReactElement } from 'react'
+import { Lock, Banknote, CircleCheck, Clock, RefreshCw } from 'lucide-react'
+import { useEscrow } from '../useEscrow'
+import { cancelJob, fromBaseUnits, fundJob, refundJob, releaseJob, type JobView } from '../lib/escrow'
+import { explorer, PROGRAM_ID, STABLE_DECIMALS, STABLE_MINT, STABLE_SYMBOL } from '../lib/config'
 import './Dashboard.css'
 
-type JobStatus = 'Locked' | 'In progress' | 'Awaiting code' | 'Released'
-
-type DemoJob = { id: string; service: string; customer: string; amount: number; status: JobStatus }
-
-// Demo data only. Replace with accounts read from the escrow program once it exists.
-const DEMO_JOBS: DemoJob[] = [
-  { id: 'J-1042', service: 'Braids + wash', customer: 'Customer ••41', amount: 45, status: 'Locked' },
-  { id: 'J-1041', service: 'Shop shelving repair', customer: 'Customer ••17', amount: 120, status: 'In progress' },
-  { id: 'J-1040', service: 'Bulk soap delivery', customer: 'Retailer ••08', amount: 310, status: 'Awaiting code' },
-  { id: 'J-1039', service: 'Haircut', customer: 'Customer ••62', amount: 12, status: 'Released' },
-]
+const LABEL: Record<string, string> = { created: 'Awaiting payment', funded: 'Locked', released: 'Released', cancelled: 'Cancelled', refunded: 'Refunded' }
 
 const LEVELS = [
   { name: 'Bronze', from: 0 },
@@ -26,25 +20,88 @@ function levelFor(completed: number) {
   return { current: LEVELS[idx], next, progress: next ? (completed - LEVELS[idx].from) / (next.from - LEVELS[idx].from) : 1 }
 }
 
-const EMBED = `<a href="https://omukwano.app/pay/YOUR-BUSINESS"
+const short = (a: string) => `${a.slice(0, 4)}…${a.slice(-4)}`
+const when = (unix: number) => new Date(unix * 1000).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })
+const money = (j: JobView) => `${fromBaseUnits(j.amount, STABLE_DECIMALS)} ${j.mint.equals(STABLE_MINT) ? STABLE_SYMBOL : 'tokens'}`
+
+const EMBED = `<a href="https://omukwano-solana.vercel.app/#pay"
    class="omukwano-pay">Pay with Omukwano</a>`
 
-export function Dashboard() {
-  const completed = DEMO_JOBS.filter((j) => j.status === 'Released').length
-  const locked = DEMO_JOBS.filter((j) => j.status !== 'Released').reduce((s, j) => s + j.amount, 0)
-  const released = DEMO_JOBS.filter((j) => j.status === 'Released').reduce((s, j) => s + j.amount, 0)
-  const { current, next, progress } = levelFor(completed)
+// What visitors see before they connect a wallet.
+const DEMO = [
+  { id: 'J-1042', service: 'HAIR', who: 'Customer ••41', amount: '45 USDC', status: 'funded' },
+  { id: 'J-1041', service: 'REPR', who: 'Customer ••17', amount: '120 USDC', status: 'funded' },
+  { id: 'J-1040', service: 'DLVR', who: 'Retailer ••08', amount: '310 USDC', status: 'created' },
+  { id: 'J-1039', service: 'HAIR', who: 'Customer ••62', amount: '12 USDC', status: 'released' },
+]
 
-  const stats = [
-    { label: 'Funds in escrow', value: `${locked} USDC`, Icon: Lock },
-    { label: 'Paid out', value: `${released} USDC`, Icon: Banknote },
-    { label: 'Jobs completed', value: String(completed), Icon: CircleCheck },
-    { label: 'Open jobs', value: String(DEMO_JOBS.length - completed), Icon: Clock },
-  ]
+export function Dashboard() {
+  const { connected, me, program, jobs, loading, error, busy, notes, refresh, act } = useEscrow()
+
+  const locked = jobs.filter((j) => j.status === 'funded').reduce((s, j) => s + Number(fromBaseUnits(j.amount, STABLE_DECIMALS)), 0)
+  const released = jobs.filter((j) => j.status === 'released')
+  const paidOut = released.reduce((s, j) => s + Number(fromBaseUnits(j.amount, STABLE_DECIMALS)), 0)
+  const open = jobs.filter((j) => j.status === 'created' || j.status === 'funded').length
+  const completedAsProvider = me ? released.filter((j) => j.provider.equals(me)).length : 0
+  const { current, next, progress } = levelFor(connected ? completedAsProvider : 1)
+
+  const stats = connected
+    ? [
+        { label: 'Funds in escrow', value: `${locked} ${STABLE_SYMBOL}`, Icon: Lock },
+        { label: 'Paid out', value: `${paidOut} ${STABLE_SYMBOL}`, Icon: Banknote },
+        { label: 'Jobs completed', value: String(released.length), Icon: CircleCheck },
+        { label: 'Open jobs', value: String(open), Icon: Clock },
+      ]
+    : [
+        { label: 'Funds in escrow', value: '475 USDC', Icon: Lock },
+        { label: 'Paid out', value: '12 USDC', Icon: Banknote },
+        { label: 'Jobs completed', value: '1', Icon: CircleCheck },
+        { label: 'Open jobs', value: '3', Icon: Clock },
+      ]
+
+  const now = Math.floor(Date.now() / 1000)
+
+  const actions = (j: JobView) => {
+    if (!program || !me) return null
+    const key = j.address.toBase58()
+    const isCustomer = j.customer.equals(me)
+    const isAttestor = j.attestor.equals(me)
+    const disabled = busy !== null
+    const btns: ReactElement[] = []
+
+    if (isCustomer && j.status === 'created') {
+      btns.push(<button key="fund" className="mini primary" disabled={disabled} onClick={() => act(key, () => fundJob(program, me, j))}>Pay in</button>)
+      btns.push(<button key="cancel" className="mini" disabled={disabled} onClick={() => act(key, () => cancelJob(program, j))}>Cancel</button>)
+    }
+    if (isAttestor && j.status === 'funded') {
+      btns.push(<button key="release" className="mini primary" disabled={disabled} onClick={() => act(key, () => releaseJob(program, me, j))}>Confirm &amp; pay provider</button>)
+    }
+    if (isCustomer && j.status === 'funded') {
+      const late = now > j.deadline.toNumber()
+      btns.push(
+        <button key="refund" className="mini" disabled={disabled || !late} title={late ? '' : `Available after ${when(j.deadline.toNumber())}`} onClick={() => act(key, () => refundJob(program, me, j))}>
+          {late ? 'Refund' : `Refund after ${when(j.deadline.toNumber())}`}
+        </button>,
+      )
+    }
+    return (
+      <>
+        <div className="row-actions">{btns}</div>
+        {notes[key] && <small className="note">{notes[key]}</small>}
+      </>
+    )
+  }
 
   return (
     <div className="dash">
-      <p className="demo-note">Demo data. This panel will read real jobs from the escrow program once it is deployed.</p>
+      {connected ? (
+        <p className="demo-note">
+          Live from Solana devnet · program <a href={explorer(PROGRAM_ID)} target="_blank" rel="noreferrer">{short(PROGRAM_ID)}</a>
+          <button className="refresh" onClick={refresh} disabled={loading} title="Reload" aria-label="Reload jobs"><RefreshCw size={14} className={loading ? 'spin' : ''} /></button>
+        </p>
+      ) : (
+        <p className="demo-note">Example data. Connect your wallet to see your own jobs from the escrow program.</p>
+      )}
 
       <div className="dash-stats">
         {stats.map((s) => (
@@ -61,27 +118,46 @@ export function Dashboard() {
       <div className="dash-cols">
         <div className="card jobs">
           <h3>Your jobs</h3>
-          <table>
-            <thead>
-              <tr><th>Job</th><th>Service</th><th>Amount</th><th>Status</th></tr>
-            </thead>
-            <tbody>
-              {DEMO_JOBS.map((j) => (
-                <tr key={j.id}>
-                  <td data-label="Job">{j.id}</td>
-                  <td data-label="Service">{j.service}<small>{j.customer}</small></td>
-                  <td data-label="Amount">{j.amount} USDC</td>
-                  <td data-label="Status"><span className={`chip chip-${j.status.replace(' ', '-').toLowerCase()}`}>{j.status}</span></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {error && <p className="err">{error}</p>}
+          {connected && !loading && jobs.length === 0 && !error && (
+            <p className="empty">No jobs yet. Create one from the Pay tab (Crypto option) and it will appear here.</p>
+          )}
+          {(!connected || jobs.length > 0) && (
+            <table>
+              <thead>
+                <tr><th>Job</th><th>Service</th><th>Amount</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                {connected
+                  ? jobs.map((j) => (
+                      <tr key={j.address.toBase58()}>
+                        <td data-label="Job"><a href={explorer(j.address.toBase58())} target="_blank" rel="noreferrer">{short(j.address.toBase58())}</a></td>
+                        <td data-label="Service">
+                          {j.reference}
+                          <small>{me && j.customer.equals(me) ? `to ${short(j.provider.toBase58())}` : `from ${short(j.customer.toBase58())}`} · due {when(j.deadline.toNumber())}</small>
+                          {actions(j)}
+                        </td>
+                        <td data-label="Amount">{money(j)}</td>
+                        <td data-label="Status"><span className={`chip chip-${j.status}`}>{LABEL[j.status]}</span></td>
+                      </tr>
+                    ))
+                  : DEMO.map((j) => (
+                      <tr key={j.id}>
+                        <td data-label="Job">{j.id}</td>
+                        <td data-label="Service">{j.service}<small>{j.who}</small></td>
+                        <td data-label="Amount">{j.amount}</td>
+                        <td data-label="Status"><span className={`chip chip-${j.status}`}>{LABEL[j.status]}</span></td>
+                      </tr>
+                    ))}
+              </tbody>
+            </table>
+          )}
         </div>
 
         <div className="dash-side">
           <div className="card">
             <h3>Provider level</h3>
-            <p className="level"><span className="badge">{current.name}</span>{next ? ` · ${next.from - completed} more jobs to ${next.name}` : ' · top level'}</p>
+            <p className="level"><span className="badge">{current.name}</span>{next ? ` · ${next.from - (connected ? completedAsProvider : 1)} more jobs to ${next.name}` : ' · top level'}</p>
             <div className="bar"><i style={{ width: `${Math.round(progress * 100)}%` }} /></div>
           </div>
           <div className="card">

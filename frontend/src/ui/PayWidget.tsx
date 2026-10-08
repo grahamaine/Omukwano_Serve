@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Coins, Smartphone, CreditCard, Loader2, CircleCheck, CircleX, type LucideIcon } from 'lucide-react'
+import { CryptoPay } from './CryptoPay'
 import './PayWidget.css'
 
 type Method = 'mtn' | 'airtel' | 'pesapal' | 'crypto'
@@ -89,6 +90,10 @@ export function PayWidget() {
         ))}
       </div>
 
+      {method === 'crypto' ? (
+        <CryptoPay />
+      ) : (
+        <>
       <div className="fields">
         <label>Amount (UGX)
           <input inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value.replace(/\D/g, ''))} disabled={busy} />
@@ -115,6 +120,8 @@ export function PayWidget() {
           {phase === 'failed' && <CircleX size={18} />}
           {message}
         </p>
+      )}
+        </>
       )}
     </div>
   )
