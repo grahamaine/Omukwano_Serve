@@ -58,6 +58,17 @@ export class AfricasTalkingSms implements Sms {
 export const clean = (v: string | undefined) =>
   (v ?? '').trim().replace(/^[A-Z][A-Z0-9_]*\s*=\s*/, '').replace(/^["']+|["']+$/g, '').trim()
 
+/** Finds the web address even if the whole `NAME="https://..."` line, or both lines, were pasted. */
+export const upstashUrl = (raw: string | undefined) => (raw ?? '').match(/https?:\/\/[^\s"']+/)?.[0] ?? clean(raw)
+
+/** Finds the token even if the whole block was pasted; refuses a masked value. */
+export const upstashToken = (raw: string | undefined) => {
+  const v = raw ?? ''
+  const t = (/REST_TOKEN\s*=\s*["']?([^"'\s]+)/.exec(v)?.[1] ?? clean(v)).trim()
+  if (/^\*+$/.test(t)) throw new HttpError(503, 'The Upstash token was saved as asterisks. Reveal the token in Upstash (eye icon) and add it again.')
+  return t
+}
+
 const cleanEnv = (name: string) => {
   const v = clean(process.env[name])
   if (!v) throw new HttpError(500, `Server is missing ${name}`)
@@ -78,8 +89,8 @@ let cached: Deps | null = null
 /** Builds the service from environment variables. Secrets stay on the server. */
 export function buildDeps(): Deps {
   if (cached) return cached
-  const redisUrl = clean(process.env.UPSTASH_REDIS_REST_URL)
-  const redisToken = clean(process.env.UPSTASH_REDIS_REST_TOKEN)
+  const redisUrl = upstashUrl(process.env.UPSTASH_REDIS_REST_URL)
+  const redisToken = upstashToken(process.env.UPSTASH_REDIS_REST_TOKEN)
   if (!redisUrl || !redisToken) throw new HttpError(503, 'The confirmation service has no database configured yet')
 
   cached = {
