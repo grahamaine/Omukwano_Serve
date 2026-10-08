@@ -45,7 +45,14 @@ const hashCode = (d: Deps, job: string, code: string) =>
 async function loadFundedJob(d: Deps, jobAddress: string) {
   let job: PublicKey
   try { job = new PublicKey(jobAddress) } catch { throw new HttpError(400, 'Invalid job address') }
-  const acc = await program(d).account.job.fetchNullable(job)
+  let acc: any
+  try {
+    acc = await program(d).account.job.fetchNullable(job)
+  } catch (e) {
+    // an address that exists but is not one of our jobs fails to decode
+    if (/discriminator|decode|Invalid account|Account does not belong/i.test(String((e as Error).message))) acc = null
+    else throw e
+  }
   if (!acc) throw new HttpError(404, 'Job not found')
   if (!acc.attestor.equals(d.attestor.publicKey)) throw new HttpError(403, 'This job is not confirmed by the Omukwano service')
   if (Object.keys(acc.status)[0] !== 'funded') throw new HttpError(409, 'The job has not been paid in, or is already finished')

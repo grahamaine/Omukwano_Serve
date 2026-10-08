@@ -23,7 +23,7 @@ export function route(handler: (req: VercelRequest) => Promise<unknown>) {
       res.status(200).json(data)
     } catch (e) {
       const status = e instanceof HttpError ? e.status : 502
-      const message = e instanceof HttpError ? e.message : 'Upstream payment provider error'
+      const message = e instanceof HttpError ? e.message : 'The service hit an error talking to an outside provider. Please try again.'
       if (!(e instanceof HttpError)) console.error('payment error', (e as Error).message)
       res.status(status).json({ error: message })
     }
