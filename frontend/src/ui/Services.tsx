@@ -22,13 +22,22 @@ export const CATEGORIES: Category[] = [
   { ref: 'GOOD', name: 'Other goods', text: 'Anything sold in person or online.', group: 'Store', Icon: Package },
 ]
 
-export function Services() {
+export function Services({ query = '', onQuery }: { query?: string; onQuery?: (q: string) => void }) {
   const [group, setGroup] = useState<Group>('Services')
-  const list = CATEGORIES.filter((c) => c.group === group)
+  const q = query.trim().toLowerCase()
+  const list = q
+    ? CATEGORIES.filter((c) => `${c.ref} ${c.name} ${c.text}`.toLowerCase().includes(q))
+    : CATEGORIES.filter((c) => c.group === group)
 
   return (
     <div className="services">
-      <div className="tabs" role="tablist">
+      {onQuery && (
+        <div className="svc-search">
+          <input placeholder="Filter services, e.g. hair, food, repair" value={query} onChange={(e) => onQuery(e.target.value)} />
+          {query && <button onClick={() => onQuery('')}>Clear</button>}
+        </div>
+      )}
+      <div className="tabs" role="tablist" hidden={!!q}>
         {(['Services', 'Store'] as Group[]).map((g) => (
           <button key={g} role="tab" aria-selected={group === g} className={group === g ? 'tab on' : 'tab'} onClick={() => setGroup(g)}>
             {g === 'Services' ? 'Local services' : 'Store: rides, food & goods'}
@@ -36,6 +45,7 @@ export function Services() {
         ))}
       </div>
 
+      {q && list.length === 0 && <p className="code-note">No service matches “{query}”.</p>}
       <div className="grid grid-wide">
         {list.map((c) => (
           <article className="card wide cat" key={c.ref}>

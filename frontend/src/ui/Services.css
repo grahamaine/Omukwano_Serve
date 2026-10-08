@@ -8,3 +8,10 @@
 .code-note code { color: var(--teal); font-family: ui-monospace, Consolas, monospace; }
 
 .cat .ref { margin-left: .4rem; padding: .05rem .5rem; border-radius: 6px; border: 1px solid rgba(20,241,178,.4); color: var(--teal); font: 600 .7rem ui-monospace, Consolas, monospace; letter-spacing: .08em; vertical-align: middle; }
+
+.svc-search { display: flex; gap: .6rem; margin-bottom: 1rem; }
+.svc-search input { flex: 1; min-width: 0; padding: .75rem .9rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text-h); font: 400 1rem var(--font); }
+.svc-search input:focus { outline: 2px solid var(--teal); border-color: transparent; }
+.svc-search button { padding: 0 1rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text-h); font: 500 .95rem var(--font); cursor: pointer; }
+.tabs[hidden] { display: none; }
+.services .tabs { justify-content: flex-start; }
