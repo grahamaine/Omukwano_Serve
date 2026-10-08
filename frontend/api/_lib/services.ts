@@ -54,6 +54,16 @@ export class AfricasTalkingSms implements Sms {
   }
 }
 
+/** Tolerates a value pasted as `NAME="value"` instead of just `value`. */
+export const clean = (v: string | undefined) =>
+  (v ?? '').trim().replace(/^[A-Z][A-Z0-9_]*\s*=\s*/, '').replace(/^["']+|["']+$/g, '').trim()
+
+const cleanEnv = (name: string) => {
+  const v = clean(process.env[name])
+  if (!v) throw new HttpError(500, `Server is missing ${name}`)
+  return v
+}
+
 function attestorKey(): Keypair {
   const raw = env('ATTESTOR_SECRET_KEY')
   try {
@@ -68,16 +78,16 @@ let cached: Deps | null = null
 /** Builds the service from environment variables. Secrets stay on the server. */
 export function buildDeps(): Deps {
   if (cached) return cached
-  const redisUrl = process.env.UPSTASH_REDIS_REST_URL
-  const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN
+  const redisUrl = clean(process.env.UPSTASH_REDIS_REST_URL)
+  const redisToken = clean(process.env.UPSTASH_REDIS_REST_TOKEN)
   if (!redisUrl || !redisToken) throw new HttpError(503, 'The confirmation service has no database configured yet')
 
   cached = {
     connection: new Connection(process.env.SOLANA_RPC_URL || 'https://api.devnet.solana.com', 'confirmed'),
     attestor: attestorKey(),
     store: new UpstashStore(redisUrl, redisToken),
-    sms: new AfricasTalkingSms(env('AT_USERNAME'), env('AT_API_KEY'), process.env.AT_ENV !== 'production', process.env.AT_SENDER_ID),
-    secret: env('CODE_SECRET'),
+    sms: new AfricasTalkingSms(cleanEnv('AT_USERNAME'), cleanEnv('AT_API_KEY'), clean(process.env.AT_ENV) !== 'production', clean(process.env.AT_SENDER_ID) || undefined),
+    secret: cleanEnv('CODE_SECRET'),
   }
   return cached
 }
