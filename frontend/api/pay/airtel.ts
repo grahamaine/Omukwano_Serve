@@ -36,7 +36,8 @@ export default route(async (req) => {
     const id = String(req.query.id ?? '')
     if (!/^[A-Za-z0-9-]{8,64}$/.test(id)) throw new HttpError(400, 'Invalid transaction id')
     const t = await token()
-    const r = await fetch(`${env('AIRTEL_BASE_URL')}/standard/v1/payments/${id}`, { headers: headers(t) })
+    const statusPath = process.env.AIRTEL_STATUS_PATH ?? '/standard/v1/payments/'
+    const r = await fetch(`${env('AIRTEL_BASE_URL')}${statusPath}${id}`, { headers: headers(t) })
     const d = await json<{ data?: { transaction?: { status?: string } } }>(r, 'Airtel status')
     const code = d.data?.transaction?.status ?? 'TIP'
     return { status: STATUS[code] ?? 'PENDING', code }

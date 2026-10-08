@@ -47,3 +47,29 @@ live sandbox credentials**. Expect to adjust field names after the first real te
   step (treasury wallet funding `fund_job` after a confirmed payment) is still to be built, along with
   webhook verification and idempotency so a payment is credited only once.
 - Add rate limiting before going live, and keep payment secrets out of logs.
+
+## Sandbox setup and testing
+
+### MTN MoMo (sandbox)
+1. Create an account at <https://momodeveloper.mtn.com>, subscribe to **Collections**, and copy the **Primary key**.
+2. On your own machine run (PowerShell, from `frontend/`):
+   ```powershell
+   $env:MTN_SUBSCRIPTION_KEY = "<primary key>"; node scripts/mtn-sandbox-setup.mjs
+   ```
+   It creates a sandbox API user and API key and prints them once.
+3. Add to Vercel (production, mark sensitive): `MTN_SUBSCRIPTION_KEY`, `MTN_API_USER`, `MTN_API_KEY`,
+   `MTN_BASE_URL=https://sandbox.momodeveloper.mtn.com`, `MTN_TARGET_ENV=sandbox`, `MTN_CURRENCY=EUR`.
+4. Redeploy, then `node scripts/check-payments.mjs mtn`.
+
+Production (`mtnuganda`, UGX) needs MTN Uganda to approve your business; the sandbox keys do not carry over.
+
+### Airtel Money (UAT)
+1. Register at <https://developers.airtel.africa>, create an app, and take its UAT **client id** and **client secret**.
+2. Add `AIRTEL_BASE_URL=https://openapiuat.airtel.africa`, `AIRTEL_CLIENT_ID`, `AIRTEL_CLIENT_SECRET`.
+3. Public guides disagree on the collection path (`/merchant/v1/payments/` vs `/merchant/v2/payments/`).
+   Set `AIRTEL_PAYMENT_PATH` (and `AIRTEL_STATUS_PATH` if needed) to what the portal's API reference shows.
+4. Redeploy, then `node scripts/check-payments.mjs airtel`.
+
+### Reading the check script
+`500 Server is missing …` = not configured. `502` = the provider rejected the call; read the Vercel function logs
+for the provider's reason. `400` = our own input check (for example a phone number that is not Ugandan).
