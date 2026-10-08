@@ -70,7 +70,7 @@ export default route(async (req) => {
       id: `${jobRef}-${randomUUID().slice(0, 6)}`,
       currency: 'UGX',
       amount,
-      description: `Omukwano escrow deposit ${jobRef}`,
+      description: `Pamoja escrow deposit ${jobRef}`,
       callback_url: `${base}/?pay=done`,
       notification_id: env('PESAPAL_IPN_ID'),
       billing_address: { email_address: email || undefined, phone_number: phone || undefined, country_code: 'UG' },

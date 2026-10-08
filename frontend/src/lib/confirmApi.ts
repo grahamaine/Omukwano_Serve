@@ -1,7 +1,7 @@
 // Client for the confirmation service (api/confirm/*).
 
 // Must match issueMessage() in api/_lib/confirm.ts: the customer signs this to prove they own the job.
-export const issueMessage = (job: string) => `Omukwano: send my confirmation code for job ${job}`
+export const issueMessage = (job: string) => `Pamoja: send my confirmation code for job ${job}`
 
 async function call<T>(url: string, init?: RequestInit): Promise<T> {
   const r = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...init })

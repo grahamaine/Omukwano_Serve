@@ -6,7 +6,7 @@ type Group = 'Services' | 'Store'
 
 type Category = { ref: string; name: string; text: string; group: Group; Icon: LucideIcon }
 
-// `ref` is the public reference stored on each job and shown in the SMS code, e.g. OMK-HAIR-483920.
+// `ref` is the public reference stored on each job and shown in the SMS code, e.g. PMJ-HAIR-483920.
 export const CATEGORIES: Category[] = [
   // Services rendered
   { ref: 'HAIR', name: 'Beauty & barber', text: 'Salons, barbers, braiding, nails and spas.', group: 'Services', Icon: Scissors },
@@ -72,7 +72,7 @@ export function Services({ query = '', onQuery }: { query?: string; onQuery?: (q
       </div>
 
       <p className="code-note">
-        Every job carries one of these references. The customer’s confirmation SMS looks like <code>OMK-HAIR-483920</code>.
+        Every job carries one of these references. The customer’s confirmation SMS looks like <code>PMJ-HAIR-483920</code>.
       </p>
     </div>
   )

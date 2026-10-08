@@ -1,4 +1,4 @@
-# Omukwano brand assets
+# Pamoja brand assets
 
 | File | Size | Use |
 |---|---|---|

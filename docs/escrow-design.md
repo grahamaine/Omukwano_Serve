@@ -1,4 +1,4 @@
-# Omukwano escrow: build spec
+# Pamoja escrow: build spec
 
 A `Job` is one booking for a service or goods order. Money moves only through the program.
 
@@ -12,7 +12,7 @@ Cancelled             Refunded
 
 ## Confirmation: reference + 6-digit code, checked off-chain
 
-The customer receives an SMS/WhatsApp such as **`OMK-HAIR-483920`**:
+The customer receives an SMS/WhatsApp such as **`PMJ-HAIR-483920`**:
 
 - `HAIR` = public **reference** (service/goods type), stored on the `Job` and visible to all.
 - `483920` = secret 6-digit code, known only to the customer and the confirmation service.

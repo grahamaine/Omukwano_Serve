@@ -19,7 +19,7 @@ export function buildWallets(): Adapter[] {
         options: {
           projectId: WALLETCONNECT_PROJECT_ID,
           metadata: {
-            name: 'Omukwano',
+            name: 'Pamoja',
             description: 'Pay when the service is done. Escrow for local services in East Africa.',
             url: window.location.origin,
             icons: [`${window.location.origin}/favicon-192.png`],

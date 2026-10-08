@@ -72,9 +72,9 @@ export function TopBar({ tab, onTab, query, onQuery }: { tab: TabId; onTab: (t: 
   const [open, setOpen] = useState(false)
   return (
     <header className="topbar">
-      <button className="brand" onClick={() => onTab('home')} aria-label="Omukwano home">
+      <button className="brand" onClick={() => onTab('home')} aria-label="Pamoja home">
         <img src={logo} alt="" />
-        <span>Omukwano</span>
+        <span>Pamoja</span>
       </button>
 
       <nav className={open ? 'top-links open' : 'top-links'}>
@@ -110,7 +110,7 @@ export function TopBar({ tab, onTab, query, onQuery }: { tab: TabId; onTab: (t: 
 export function SideRail({ tab, onTab }: { tab: TabId; onTab: (t: TabId) => void }) {
   return (
     <aside className="siderail" aria-label="Pages and tools">
-      <button className="tile logo" onClick={() => onTab('home')} title="Omukwano home" aria-label="Omukwano home">
+      <button className="tile logo" onClick={() => onTab('home')} title="Pamoja home" aria-label="Pamoja home">
         <img src={logo} alt="" />
       </button>
       {NAV.map(({ label, Icon, tab: t, href }) =>
@@ -141,7 +141,7 @@ export function ProfileHeader({ onTab }: { onTab: (t: TabId) => void }) {
 
   const share = async () => {
     try {
-      if (navigator.share) await navigator.share({ title: 'Omukwano', text: 'Pay when the service is done.', url: SITE_URL })
+      if (navigator.share) await navigator.share({ title: 'Pamoja', text: 'Pay when the service is done.', url: SITE_URL })
       else { await navigator.clipboard.writeText(SITE_URL); flash('Link copied') }
     } catch { /* user cancelled */ }
   }
@@ -153,12 +153,12 @@ export function ProfileHeader({ onTab }: { onTab: (t: TabId) => void }) {
 
       <div className="profile-row">
         <div className="avatar">
-          <img src={logo} alt="Omukwano logo" />
+          <img src={logo} alt="Pamoja logo" />
           <span className="verified" title="Built on Solana"><BadgeCheck size={18} /></span>
         </div>
 
         <div className="who">
-          <h1>Omukwano</h1>
+          <h1>Pamoja</h1>
           <p className="tagline">Pay when the service is done.</p>
           <div className="chips">
             <span className="chip live"><i /> Solana Devnet</span>

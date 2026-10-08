@@ -46,7 +46,7 @@ export default route(async (req) => {
       currency: env('MTN_CURRENCY'),
       externalId: jobRef,
       payer: { partyIdType: 'MSISDN', partyId: phone.intl },
-      payerMessage: `Omukwano ${jobRef}`,
+      payerMessage: `Pamoja ${jobRef}`,
       payeeNote: `Escrow deposit ${jobRef}`,
     }),
   })

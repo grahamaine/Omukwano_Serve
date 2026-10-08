@@ -1,8 +1,8 @@
-<p align="center"><img src="brand/banner-1500x500.png" alt="Omukwano — Services & Suppliers, East Africa, built on Solana" width="100%"></p>
+<p align="center"><img src="brand/banner-1500x500.png" alt="Pamoja — Services & Suppliers, East Africa, built on Solana" width="100%"></p>
 
-# Omukwano
+# Pamoja
 
-**Pay when the service is done.** Omukwano is a Solana escrow app for local businesses in East Africa: salons, repairs, rides, food, shops and suppliers. A customer locks a payment, the provider does the job, and the money is released when the customer confirms with a short code.
+**Pay when the service is done.** Pamoja is a Solana escrow app for local businesses in East Africa: salons, repairs, rides, food, shops and suppliers. A customer locks a payment, the provider does the job, and the money is released when the customer confirms with a short code.
 
 **Live demo:** https://omukwano-solana.vercel.app (Solana devnet)
 
@@ -12,7 +12,7 @@
 
 1. **Lock.** The customer's payment goes into a vault owned by the Solana program.
 2. **Serve.** The provider does the job or delivers the order.
-3. **Confirm.** The customer gets an SMS like `OMK-HAIR-483920` (a service reference plus a 6-digit code). A confirmation service checks it and signs the release.
+3. **Confirm.** The customer gets an SMS like `PMJ-HAIR-483920` (a service reference plus a 6-digit code). A confirmation service checks it and signs the release.
 4. **Safety nets.** The customer can cancel before funding, or reclaim the money after the deadline.
 
 More detail: [docs/how-it-works.md](docs/how-it-works.md).
@@ -20,7 +20,7 @@ More detail: [docs/how-it-works.md](docs/how-it-works.md).
 ## What is in the app
 
 - Services and store categories (beauty, repairs, cleaning, construction, rides, food, delivery, shops and more), each with a job reference code.
-- Business dashboard preview (escrow balance, payouts, provider levels, embeddable "Pay with Omukwano" button).
+- Business dashboard preview (escrow balance, payouts, provider levels, embeddable "Pay with Pamoja" button).
 - Wallet connection: Phantom, Solflare and WalletConnect.
 - Payment routes for MTN MoMo, Airtel Money and Pesapal (card, bank, mobile money), plus a crypto option.
 - Supported-chains logo slideshow, mobile-first layout, Oswald typography.

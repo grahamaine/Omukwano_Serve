@@ -34,7 +34,7 @@ export interface Deps {
 
 const TTL = 60 * 60 * 24 * 60 // keep codes for 60 days
 
-export const issueMessage = (job: string) => `Omukwano: send my confirmation code for job ${job}`
+export const issueMessage = (job: string) => `Pamoja: send my confirmation code for job ${job}`
 
 const program = (d: Deps) =>
   new Program(IDL, new AnchorProvider(d.connection, new Wallet(d.attestor), { commitment: 'confirmed' })) as any
@@ -54,7 +54,7 @@ async function loadFundedJob(d: Deps, jobAddress: string) {
     else throw e
   }
   if (!acc) throw new HttpError(404, 'Job not found')
-  if (!acc.attestor.equals(d.attestor.publicKey)) throw new HttpError(403, 'This job is not confirmed by the Omukwano service')
+  if (!acc.attestor.equals(d.attestor.publicKey)) throw new HttpError(403, 'This job is not confirmed by the Pamoja service')
   if (Object.keys(acc.status)[0] !== 'funded') throw new HttpError(409, 'The job has not been paid in, or is already finished')
   return { job, acc }
 }
@@ -80,7 +80,7 @@ export async function issueCode(d: Deps, input: { job: string; phone: string; si
   const short = `${input.job.slice(0, 4)}…${input.job.slice(-4)}`
   await d.sms.send(
     `+${phone.intl}`,
-    `Omukwano code: OMK-${ref}-${code}. Give it to the provider only when the service is done. Job ${short}.`,
+    `Pamoja code: PMJ-${ref}-${code}. Give it to the provider only when the service is done. Job ${short}.`,
   )
   return { sent: true, resendsLeft: MAX_ISSUES - issued }
 }
@@ -89,7 +89,7 @@ export async function issueCode(d: Deps, input: { job: string; phone: string; si
 export async function releaseWithCode(d: Deps, input: { job: string; code: string }) {
   const { job, acc } = await loadFundedJob(d, input.job)
 
-  // accept "483920" or the full "OMK-HAIR-483920"
+  // accept "483920" or the full "PMJ-HAIR-483920"
   const digits = String(input.code ?? '').trim().split('-').pop()!.replace(/\s/g, '')
   if (!/^\d{6}$/.test(digits)) throw new HttpError(400, 'Enter the 6-digit code from the SMS')
 

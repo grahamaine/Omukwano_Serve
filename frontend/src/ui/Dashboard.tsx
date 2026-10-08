@@ -27,7 +27,7 @@ const when = (unix: number) => new Date(unix * 1000).toLocaleString([], { dateSt
 const money = (j: JobView) => `${fromBaseUnits(j.amount, STABLE_DECIMALS)} ${j.mint.equals(STABLE_MINT) ? STABLE_SYMBOL : 'tokens'}`
 
 const EMBED = `<a href="https://omukwano-solana.vercel.app/#pay"
-   class="omukwano-pay">Pay with Omukwano</a>`
+   class="pamoja-pay">Pay with Pamoja</a>`
 
 // What visitors see before they connect a wallet.
 const DEMO = [
@@ -167,7 +167,7 @@ export function Dashboard() {
             <div className="bar"><i style={{ width: `${Math.round(progress * 100)}%` }} /></div>
           </div>
           <div className="card">
-            <h3>“Pay with Omukwano” button</h3>
+            <h3>“Pay with Pamoja” button</h3>
             <p>Paste this on your website or share the link on WhatsApp.</p>
             <pre>{EMBED}</pre>
           </div>

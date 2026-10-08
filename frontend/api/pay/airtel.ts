@@ -46,14 +46,14 @@ export default route(async (req) => {
   const amount = parseAmount(req.body?.amount)
   const phone = normalisePhone(req.body?.phone)
   const jobRef = parseRef(req.body?.jobRef)
-  const transactionId = `OMK-${randomUUID().slice(0, 8)}`
+  const transactionId = `PMJ-${randomUUID().slice(0, 8)}`
   const t = await token()
   const path = process.env.AIRTEL_PAYMENT_PATH ?? '/merchant/v2/payments/'
   const r = await fetch(`${env('AIRTEL_BASE_URL')}${path}`, {
     method: 'POST',
     headers: headers(t),
     body: JSON.stringify({
-      reference: `Omukwano ${jobRef}`,
+      reference: `Pamoja ${jobRef}`,
       subscriber: { country: 'UG', currency: 'UGX', msisdn: phone.national },
       transaction: { amount, country: 'UG', currency: 'UGX', id: transactionId },
     }),

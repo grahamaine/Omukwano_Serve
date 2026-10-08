@@ -7,7 +7,7 @@ import {
 } from '@solana/spl-token'
 import type { CounterProgram } from '../idl/counter_program'
 
-// Talks to the Omukwano escrow program. No React or browser code in here.
+// Talks to the Pamoja escrow program. No React or browser code in here.
 
 export type JobStatus = 'created' | 'funded' | 'released' | 'cancelled' | 'refunded'
 

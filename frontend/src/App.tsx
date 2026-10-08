@@ -93,7 +93,7 @@ function App() {
 
                 <ChainMarquee title="Built on Solana · connects to" />
 
-                <Section title="Why Omukwano" sub="Designed for how people in Uganda actually pay.">
+                <Section title="Why Pamoja" sub="Designed for how people in Uganda actually pay.">
                   <div className="grid grid-wide">
                     {FEATURES.map((f) => (
                       <article className="card wide" key={f.title}>
@@ -146,7 +146,7 @@ function App() {
           </div>
 
           <footer className="footer">
-            <div className="brand"><img src={logo} alt="" /><span>Omukwano · Services &amp; Suppliers</span></div>
+            <div className="brand"><img src={logo} alt="" /><span>Pamoja · Services &amp; Suppliers</span></div>
             <p>Built on Solana · Encode Club Solana Hackathon 2026</p>
           </footer>
         </div>

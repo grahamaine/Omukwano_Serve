@@ -5,7 +5,7 @@ that attestor. It texts the customer a 6-digit code and signs the release only w
 right code.
 
 ```
-customer ── signs a message ──► POST /api/confirm/issue ──► SMS "Omukwano code: OMK-HAIR-483920 …"
+customer ── signs a message ──► POST /api/confirm/issue ──► SMS "Pamoja code: PMJ-HAIR-483920 …"
 provider ── enters the code ──► POST /api/confirm/release ──► service signs `release` ──► provider is paid
 ```
 
@@ -15,7 +15,7 @@ a fraction of a second and take the money. So the code is only ever known to the
 and the program just checks that the attestor signed.
 
 ## Safeguards (all covered by tests)
-- Only the **customer** can ask for a code: they sign `Omukwano: send my confirmation code for job <address>`
+- Only the **customer** can ask for a code: they sign `Pamoja: send my confirmation code for job <address>`
   with their wallet, and the server checks it against the job's customer.
 - The job must be **funded** and name this service as its attestor.
 - A code can be re-sent **3 times** per job. A new code resets the guess counter.
