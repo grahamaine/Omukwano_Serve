@@ -67,12 +67,13 @@ Environment variables are listed in [`frontend/.env.example`](frontend/.env.exam
 - [Escrow build spec](docs/escrow-design.md)
 - [Deployment](docs/deployment.md)
 - [Wallets and payments (WalletConnect, MTN, Airtel, Pesapal)](docs/payments.md)
+- [Confirmation service (SMS code to release)](docs/confirmation-service.md)
 
 ## Roadmap
 
-1. Finish the escrow program: `fund_job`, `release`, `cancel`, `refund`, with tests.
-2. Connect the dashboard and pay widget to real on-chain jobs.
-3. Confirmation service (SMS sending, code check, rate limiting).
+1. ✅ Escrow program: `create_job`, `fund_job`, `release`, `cancel`, `refund`, with tests (live on devnet).
+2. ✅ Dashboard and crypto checkout connected to real on-chain jobs.
+3. ✅ Confirmation service built and tested (SMS code, wallet-signed request, attempt limits). Needs Upstash and Africa's Talking accounts to switch on.
 4. Server step that funds the escrow after a confirmed mobile money or card payment.
 5. Sandbox testing of MTN, Airtel and Pesapal, then production onboarding.
 

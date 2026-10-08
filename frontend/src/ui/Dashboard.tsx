@@ -1,6 +1,8 @@
 import type { ReactElement } from 'react'
 import { Lock, Banknote, CircleCheck, Clock, RefreshCw } from 'lucide-react'
 import { useEscrow } from '../useEscrow'
+import { useConfirmService } from '../useConfirmService'
+import { ConfirmBox } from './ConfirmBox'
 import { cancelJob, fromBaseUnits, fundJob, refundJob, releaseJob, type JobView } from '../lib/escrow'
 import { explorer, PROGRAM_ID, STABLE_DECIMALS, STABLE_MINT, STABLE_SYMBOL } from '../lib/config'
 import './Dashboard.css'
@@ -37,6 +39,7 @@ const DEMO = [
 
 export function Dashboard() {
   const { connected, me, program, jobs, loading, error, busy, notes, refresh, act } = useEscrow()
+  const service = useConfirmService()
 
   const locked = jobs.filter((j) => j.status === 'funded').reduce((s, j) => s + Number(fromBaseUnits(j.amount, STABLE_DECIMALS)), 0)
   const released = jobs.filter((j) => j.status === 'released')
@@ -84,8 +87,11 @@ export function Dashboard() {
         </button>,
       )
     }
+    const viaService = service.ready && service.attestor !== null && j.attestor.toBase58() === service.attestor && j.status === 'funded'
     return (
       <>
+        {viaService && isCustomer && <ConfirmBox job={key} role="customer" onDone={refresh} />}
+        {viaService && j.provider.equals(me) && <ConfirmBox job={key} role="provider" onDone={refresh} />}
         <div className="row-actions">{btns}</div>
         {notes[key] && <small className="note">{notes[key]}</small>}
       </>

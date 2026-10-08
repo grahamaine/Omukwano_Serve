@@ -4,6 +4,7 @@ import { PublicKey } from '@solana/web3.js'
 import { CircleCheck, CircleX, Loader2 } from 'lucide-react'
 import { useCounterProgram } from '../useCounter'
 import { friendly } from '../useEscrow'
+import { useConfirmService } from '../useConfirmService'
 import { createAndFundJob, toBaseUnits, type EscrowProgram } from '../lib/escrow'
 import { ATTESTOR_ADDRESS, explorer, STABLE_DECIMALS, STABLE_MINT, STABLE_SYMBOL } from '../lib/config'
 import { CATEGORIES } from './Services'
@@ -11,6 +12,7 @@ import { CATEGORIES } from './Services'
 // Pay with crypto: creates the job and locks the payment in the escrow vault.
 export function CryptoPay() {
   const ctx = useCounterProgram()
+  const service = useConfirmService()
   const [reference, setReference] = useState('HAIR')
   const [provider, setProvider] = useState('')
   const [amount, setAmount] = useState('5')
@@ -28,7 +30,8 @@ export function CryptoPay() {
     setMessage('Approve the two requests in your wallet: create the job, then lock the payment.')
     try {
       const providerKey = new PublicKey(provider.trim())
-      const attestor = ATTESTOR_ADDRESS ? new PublicKey(ATTESTOR_ADDRESS) : ctx.wallet.publicKey
+      const confirmer = service.ready && service.attestor ? service.attestor : ATTESTOR_ADDRESS
+      const attestor = confirmer ? new PublicKey(confirmer) : ctx.wallet.publicKey
       const base = toBaseUnits(amount, STABLE_DECIMALS)
       if (base.isZero()) throw new Error('Enter an amount above zero')
       const h = Number(hours)
@@ -44,7 +47,7 @@ export function CryptoPay() {
       })
       setJob(address.toBase58())
       setPhase('done')
-      setMessage('Payment locked in escrow. Track it in the Business tab.')
+      setMessage(service.ready ? 'Payment locked. Next, open the Business tab and text yourself the confirmation code.' : 'Payment locked in escrow. Track it in the Business tab.')
     } catch (e) {
       setPhase('failed')
       setMessage(/Invalid public key/i.test(String((e as Error).message)) ? 'That provider address is not valid.' : friendly(e))
@@ -76,7 +79,8 @@ export function CryptoPay() {
         You need devnet SOL for fees and test {STABLE_SYMBOL} in this wallet:{' '}
         <a href="https://faucet.solana.com" target="_blank" rel="noreferrer">SOL faucet</a> ·{' '}
         <a href="https://faucet.circle.com" target="_blank" rel="noreferrer">USDC faucet</a> (choose Solana Devnet).
-        {!ATTESTOR_ADDRESS && ' Demo mode: you confirm your own job. In production the Omukwano confirmation service signs the release.'}
+        {service.loaded && !service.ready && !ATTESTOR_ADDRESS && ' Demo mode: you confirm your own job. When the SMS confirmation service is switched on, the customer gets a code by SMS instead.'}
+        {service.ready && ' Confirmation by SMS code is on: after paying, you get a 6-digit code to give the provider when the service is done.'}
       </p>
 
       <button className="btn btn-primary pay" onClick={submit} disabled={busy}>

@@ -48,3 +48,10 @@
 .demo-note a { color: var(--teal); }
 .refresh { margin-left: .5rem; vertical-align: middle; display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
 .refresh .spin { animation: spin 1s linear infinite; }
+
+.confirm-box { margin-top: .6rem; }
+.confirm-row { display: flex; gap: .4rem; flex-wrap: wrap; }
+.confirm-row input { flex: 1 1 150px; min-width: 0; padding: .45rem .7rem; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text-h); font: 400 .9rem var(--font); }
+.confirm-row input:focus { outline: 2px solid var(--teal); border-color: transparent; }
+.confirm-box .ok { display: block; margin-top: .3rem; color: var(--teal); }
+.confirm-box .note { display: block; margin-top: .3rem; }
