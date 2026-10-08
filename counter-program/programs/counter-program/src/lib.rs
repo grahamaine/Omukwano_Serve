@@ -35,11 +35,17 @@ pub mod counter_program {
         fund_job::handler(ctx)
     }
 
-    pub fn release(ctx: Context<Release>) -> Result<()> {
+        pub fn release(ctx: Context<Release>) -> Result<()> {
         release::handler(ctx)
     }
 
-    // TODO (you): uncomment once increment.rs is finished.
+    pub fn cancel(ctx: Context<Cancel>) -> Result<()> {
+        cancel::handler(ctx)
+    }
+
+    pub fn refund(ctx: Context<Refund>) -> Result<()> {
+        refund::handler(ctx)
+    }
 
     // TODO (you): uncomment once increment.rs is finished.
     // pub fn increment(ctx: Context<Increment>) -> Result<()> {
