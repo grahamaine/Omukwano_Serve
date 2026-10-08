@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import { BadgeCheck, BookOpen, ChevronLeft, ChevronRight, Globe, LayoutDashboard, Link2, Menu, Search, Share2, Wallet, X } from 'lucide-react'
+import { BadgeCheck, BookOpen, ChevronLeft, ChevronRight, FlaskConical, Globe, House, BriefcaseBusiness, LayoutGrid, Link2, Menu, Search, Share2, Wallet, X, type LucideIcon } from 'lucide-react'
 import { CATEGORIES } from './Services'
 import logo from '../assets/logo-mark.png'
 import './Shell.css'
@@ -17,6 +17,17 @@ export const TABS: { id: TabId; label: string }[] = [
 
 export const SITE_URL = 'https://omukwano-solana.vercel.app'
 export const REPO_URL = 'https://github.com/grahamaine/Omukwano_Serve'
+
+// One list drives both the header menu and the left icon rail, so they always match.
+type NavItem = { label: string; Icon: LucideIcon; tab?: TabId; href?: string }
+export const NAV: NavItem[] = [
+  { label: 'Home', Icon: House, tab: 'home' },
+  { label: 'Services', Icon: LayoutGrid, tab: 'services' },
+  { label: 'Business', Icon: BriefcaseBusiness, tab: 'dashboard' },
+  { label: 'Pay', Icon: Wallet, tab: 'pay' },
+  { label: 'Devnet', Icon: FlaskConical, tab: 'devnet' },
+  { label: 'Docs', Icon: BookOpen, href: `${REPO_URL}#readme` },
+]
 
 /* ---------- banner artwork: tilted glowing rings and stars ---------- */
 function HeroArt() {
@@ -59,12 +70,6 @@ const GithubMark = () => (
 /* ---------- top bar ---------- */
 export function TopBar({ tab, onTab, query, onQuery }: { tab: TabId; onTab: (t: TabId) => void; query: string; onQuery: (q: string) => void }) {
   const [open, setOpen] = useState(false)
-  const links: { label: string; go: () => void; active: boolean }[] = [
-    { label: 'Home', go: () => onTab('home'), active: tab === 'home' },
-    { label: 'Services', go: () => onTab('services'), active: tab === 'services' },
-    { label: 'For businesses', go: () => onTab('dashboard'), active: tab === 'dashboard' },
-    { label: 'Pay', go: () => onTab('pay'), active: tab === 'pay' },
-  ]
   return (
     <header className="topbar">
       <button className="brand" onClick={() => onTab('home')} aria-label="Omukwano home">
@@ -73,10 +78,13 @@ export function TopBar({ tab, onTab, query, onQuery }: { tab: TabId; onTab: (t: 
       </button>
 
       <nav className={open ? 'top-links open' : 'top-links'}>
-        {links.map((l) => (
-          <button key={l.label} className={l.active ? 'on' : ''} onClick={() => { l.go(); setOpen(false) }}>{l.label}</button>
-        ))}
-        <a href={`${REPO_URL}#readme`} target="_blank" rel="noreferrer">Docs</a>
+        {NAV.map((n) =>
+          n.href ? (
+            <a key={n.label} href={n.href} target="_blank" rel="noreferrer">{n.label}</a>
+          ) : (
+            <button key={n.label} className={tab === n.tab ? 'on' : ''} onClick={() => { onTab(n.tab!); setOpen(false) }}>{n.label}</button>
+          ),
+        )}
       </nav>
 
       <div className="top-actions">
@@ -98,21 +106,29 @@ export function TopBar({ tab, onTab, query, onQuery }: { tab: TabId; onTab: (t: 
   )
 }
 
-/* ---------- left icon rail (service categories) ---------- */
-export function SideRail({ tab, query, onPick, onHome }: { tab: TabId; query: string; onPick: (ref: string) => void; onHome: () => void }) {
-  const picks = CATEGORIES.slice(0, 10)
+/* ---------- left icon rail: the same pages and tools as the header menu ---------- */
+export function SideRail({ tab, onTab }: { tab: TabId; onTab: (t: TabId) => void }) {
   return (
-    <aside className="siderail" aria-label="Service categories">
-      <button className={tab === 'home' && !query ? 'tile logo on' : 'tile logo'} onClick={onHome} title="Omukwano home">
-        <img src={logo} alt="Home" />
+    <aside className="siderail" aria-label="Pages and tools">
+      <button className="tile logo" onClick={() => onTab('home')} title="Omukwano home" aria-label="Omukwano home">
+        <img src={logo} alt="" />
       </button>
-      {picks.map(({ ref, name, Icon }) => (
-        <button key={ref} className={query.toUpperCase() === ref ? 'tile on' : 'tile'} onClick={() => onPick(ref)} title={name}>
-          <Icon size={22} strokeWidth={1.8} />
-        </button>
-      ))}
-      <button className="tile search-tile" onClick={() => document.getElementById('top-search')?.focus()} title="Search">
+      {NAV.map(({ label, Icon, tab: t, href }) =>
+        href ? (
+          <a key={label} className="tile" href={href} target="_blank" rel="noreferrer" title={label} aria-label={label}>
+            <Icon size={22} strokeWidth={1.8} />
+            <span>{label}</span>
+          </a>
+        ) : (
+          <button key={label} className={tab === t ? 'tile on' : 'tile'} onClick={() => onTab(t!)} title={label} aria-label={label} aria-current={tab === t ? 'page' : undefined}>
+            <Icon size={22} strokeWidth={1.8} />
+            <span>{label}</span>
+          </button>
+        ),
+      )}
+      <button className="tile search-tile" onClick={() => document.getElementById('top-search')?.focus()} title="Search" aria-label="Search">
         <Search size={20} />
+        <span>Search</span>
       </button>
     </aside>
   )
@@ -190,7 +206,7 @@ export function RightRail({ onTab }: { onTab: (t: TabId) => void }) {
         <img src={logo} alt="" />
         <span className="lvl" title="Demo provider level">LV1</span>
       </div>
-      <button onClick={() => onTab('dashboard')} title="Business dashboard" aria-label="Business dashboard"><LayoutDashboard size={20} /></button>
+      <button onClick={() => onTab('dashboard')} title="Business dashboard" aria-label="Business dashboard"><BriefcaseBusiness size={20} /></button>
       <button onClick={() => onTab('pay')} title="Pay for a job" aria-label="Pay for a job"><Wallet size={20} /></button>
       <a href={`${REPO_URL}/tree/main/docs`} target="_blank" rel="noreferrer" title="Docs" aria-label="Docs"><BookOpen size={20} /></a>
       <button className="collapse" onClick={() => setOpen(false)} aria-label="Hide quick panel"><ChevronRight size={18} /></button>

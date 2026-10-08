@@ -30,9 +30,14 @@ Trade-off: trust in the attestor for code-based confirmation. State this openly 
 
 ## References (fixed list, 2-8 uppercase letters/digits on-chain)
 
-`HAIR` beauty and barber, `REPR` repairs and fundis, `CLEN` cleaning, `BUIL` construction,
-`DLVR` courier and delivery, `RIDE` boda and taxi, `FOOD` food orders, `SHOP` goods and retail,
-`HLTH` health and wellness, `EDUC` tutoring and training, `EVNT` events, `GOOD` other goods.
+Services: `HAIR` beauty and barber, `REPR` repairs and fundis, `CLEN` cleaning, `BUIL` construction,
+`REAL` real estate and property, `PROF` professional services (accounting, legal, IT, recruitment, BPO),
+`DIGI` digital and software, `TELE` telecom and internet, `MOMO` mobile money and banking services,
+`TOUR` tours and safaris, `STAY` hotels and lodges, `EVNT` events, `HLTH` health and wellness, `EDUC` tutoring and training.
+
+Orders and deliveries: `FOOD` food and restaurants, `GROC` groceries and produce, `ELEC` electronics and fashion,
+`SHOP` shops and retail, `RIDE` boda and cab rides, `DLVR` courier and freight, `UTIL` utilities and bills,
+`PHAR` pharmacy and tele-health, `GOOD` other goods.
 
 ## Already done
 - `Job` + `JobStatus` (`state.rs`): customer, provider, mint, amount, reference, attestor, deadline, status

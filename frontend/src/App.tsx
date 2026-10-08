@@ -63,14 +63,12 @@ function App() {
   // TODO (you): add an `increment` handler here once the on-chain
   // instruction exists. Pattern: ctx.program.methods.increment().rpc()
 
-  const pickCategory = (ref: string) => { setQuery(ref); go('services') }
-
   return (
     <>
       <TopBar tab={tab} onTab={go} query={query} onQuery={setQuery} />
 
       <div className="shell">
-        <SideRail tab={tab} query={query} onPick={pickCategory} onHome={() => { setQuery(''); go('home') }} />
+        <SideRail tab={tab} onTab={(t) => { if (t !== 'services') setQuery(''); go(t) }} />
 
         <div className="main">
           <ProfileHeader onTab={go} />

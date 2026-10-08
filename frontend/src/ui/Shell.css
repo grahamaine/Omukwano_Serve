@@ -19,13 +19,14 @@
 .wallet-adapter-button:not([disabled]):hover { filter: brightness(1.08); }
 
 /* ---------- layout: left rail + content ---------- */
-.shell { display: grid; grid-template-columns: 92px minmax(0, 1fr); }
+.shell { display: grid; grid-template-columns: 100px minmax(0, 1fr); }
 .siderail { position: sticky; top: 64px; align-self: start; display: flex; flex-direction: column; align-items: center; gap: .7rem; height: calc(100vh - 64px); padding: 1rem 0; overflow-y: auto; scrollbar-width: none; }
 .siderail::-webkit-scrollbar { display: none; }
-.tile { display: grid; place-items: center; flex: none; width: 54px; height: 54px; border-radius: 15px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; transition: transform .15s, border-color .15s, color .15s; }
+.tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; flex: none; width: 68px; height: 62px; border-radius: 15px; text-decoration: none; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; transition: transform .15s, border-color .15s, color .15s; }
 .tile:hover { transform: translateY(-2px); color: var(--text-h); border-color: var(--muted); }
 .tile.on { border-color: var(--teal); color: var(--teal); box-shadow: 0 0 0 1px var(--teal) inset; }
-.tile.logo { background: #fff; border-color: #fff; }
+.tile span { font: 500 .66rem var(--font); letter-spacing: .06em; text-transform: uppercase; }
+.tile.logo { height: 54px; background: #fff; border-color: #fff; }
 .tile.logo.on { box-shadow: 0 0 0 3px rgba(20,241,178,.45); }
 .tile.logo img { width: 38px; height: 38px; border-radius: 10px; }
 .search-tile { margin-top: auto; }
@@ -84,7 +85,8 @@
 .rail-open { position: fixed; right: 0; top: 50%; z-index: 20; display: grid; place-items: center; width: 28px; height: 56px; border: 1px solid var(--border); border-right: 0; border-radius: 12px 0 0 12px; background: var(--surface); color: var(--text-h); cursor: pointer; }
 
 /* ---------- responsive ---------- */
-@media (max-width: 1180px) { .rightrail, .rail-open { display: none; } }
+@media (max-width: 1360px) { .rightrail, .rail-open { display: none; } }
+@media (min-width: 1361px) { .main { padding-right: 76px; } }
 @media (max-width: 960px) { .search { width: 170px; } }
 @media (max-width: 860px) {
   .search { display: none; }
